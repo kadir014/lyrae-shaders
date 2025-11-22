@@ -1,0 +1,12 @@
+# Buffers
+- colortex4: block atlas
+- colortex5: gi 0
+- colortex6: gi 1
+- colortex7: normal 0
+- colortex8: normal 1
+- colortex9: position
+- colortex10: final denoised gi upto before denoising, then the main buffer
+- colortex11: sky
+- colortex12: albedo
+- colortex13: overlay
+- colortex14: specular atlas
