@@ -53,7 +53,7 @@ void main() {
 		mod(gl_VertexID, 4) == 0 &&
 		voxel_in_bounds(voxel, 0, VOXEL_DIAMETER) &&
 		entityId == 0 &&
-		(mc_Entity.x == 10.0 || mc_Entity.x == 11.0 || mc_Entity.x == 12.0 || mc_Entity.x == 13.0)
+		(mc_Entity.x >= 10.0 && mc_Entity.x < 30)
 	) {
 		vec2 half_tex = abs(texcoord - mc_midTexCoord.xy);
 		vec4 texture_bounds = vec4(mc_midTexCoord.xy - half_tex, mc_midTexCoord.xy + half_tex);

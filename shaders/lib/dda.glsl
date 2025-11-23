@@ -38,6 +38,95 @@ bool read_world(vec3 voxel, out vec4 tex_bounds, out vec4 glcolor, out int block
     return false;
 }
 
+/*
+    AABB x Ray intersection function
+    by iq: https://iquilezles.org/articles/intersectors/
+
+    Edited to support boxes in world space
+*/
+vec2 aabb_x_ray(
+    in vec3 ro,
+    in vec3 rd,
+    in vec3 boxMin,
+    in vec3 boxMax,
+    out vec3 outNormal
+) {
+    vec3 inv = 1.0 / rd;
+
+    vec3 t1 = (boxMin - ro) * inv;
+    vec3 t2 = (boxMax - ro) * inv;
+
+    vec3 tmin = min(t1, t2);
+    vec3 tmax = max(t1, t2);
+
+    float tN = max(max(tmin.x, tmin.y), tmin.z);
+    float tF = min(min(tmax.x, tmax.y), tmax.z);
+
+    if (tN > tF || tF < 0.0)
+        return vec2(-1.0);
+
+    outNormal = (tN > 0.0) ? step(vec3(tN), tmin) : // ro ouside the box
+                             step(tmax, vec3(tF));  // ro inside the box
+    outNormal *= -sign(rd);
+
+    return vec2(tN, tF);
+}
+
+void aabb_hit(
+    Ray ray,
+    inout HitInfo hitinfo,
+    inout bool voxel_hit,
+    int voxel_id,
+    vec3 voxel,
+    inout float hit_t,
+    bool first
+) {
+    if (!voxel_hit) return;
+    
+    vec2 t = vec2(-1.0);
+    vec3 aabb_normal;
+    bool full_voxel = true;
+    
+    // Slab
+    if (voxel_id == 14) {
+        vec3 aabb_min = vec3(0.0) + voxel;
+        vec3 aabb_max = vec3(1.0, 0.5, 1.0) + voxel;
+
+        t = aabb_x_ray(ray.origin, ray.dir, aabb_min, aabb_max, aabb_normal);
+
+        full_voxel = false;
+    }
+    // Carpet
+    else if (voxel_id == 15) {
+        vec3 aabb_min = vec3(0.0) + voxel;
+        vec3 aabb_max = vec3(1.0, INV_16, 1.0) + voxel;
+
+        t = aabb_x_ray(ray.origin, ray.dir, aabb_min, aabb_max, aabb_normal);
+
+        full_voxel = false;
+    }
+    // End rod
+    else if (voxel_id == 16) {
+        vec3 aabb_min = vec3(0.5 - INV_16, 0.0, 0.5 - INV_16) + voxel;
+        vec3 aabb_max = vec3(0.5 + INV_16, 1.0, 0.5 + INV_16) + voxel;
+
+        t = aabb_x_ray(ray.origin, ray.dir, aabb_min, aabb_max, aabb_normal);
+
+        full_voxel = false;
+    }
+
+    // TODO: > 0.0 better?
+    if (t.y != -1.0) {
+        hit_t = t.x;
+        hitinfo.normal = aabb_normal;
+    }
+    else if (!full_voxel) {
+        voxel_hit = false;
+
+        
+    }
+}
+
 // TODO: OPTIMIZE!!!
 HitInfo dda(Ray ray, Ray ray0) {
     HitInfo hitinfo = HitInfo(
@@ -61,7 +150,13 @@ HitInfo dda(Ray ray, Ray ray0) {
     int first_id = -1;
     vec4 first_glcolor = vec4(-1.0);
     vec4 first_bounds = vec4(-1.0);
-    hitinfo.inside = read_world(voxel, first_bounds, first_glcolor, first_id);
+    float first_t = 0.0;
+    bool first_hit = read_world(voxel, first_bounds, first_glcolor, first_id);
+
+    aabb_hit(ray, hitinfo, first_hit, first_id, voxel, first_t, true);
+    vec3 first_normal = hitinfo.normal;
+
+    hitinfo.inside = first_hit;
 
     vec3 step_dir = vec3(
         int(ray.dir.x > 0.0) - int(ray.dir.x < 0.0),
@@ -116,25 +211,29 @@ HitInfo dda(Ray ray, Ray ray0) {
         vec4 voxel_bounds = vec4(-1.0);
         bool voxel_hit = read_world(voxel, voxel_bounds, voxel_glcolor, voxel_id);
 
-        //Connected voxels, useful for glass
+        // Connected voxels, useful for glass
         if (voxel_hit && any(equal(first_bounds, voxel_bounds))) {
             continue;
         }
 
+        // Handle non-full-voxels
+        aabb_hit(ray, hitinfo, voxel_hit, voxel_id, voxel, hit_t, false);
+
         if (hitinfo.inside || voxel_hit) {
             hitinfo.hit = true;
 
-            hitinfo.point = ray.origin + ray.dir * hit_t;
-
-            //if (hitinfo.inside) hitinfo.normal = -hitinfo.normal;
+            hitinfo.point = ray.origin + ray.dir * (hit_t);
 
             if (hitinfo.inside) {
                 hitinfo.tex_bounds = first_bounds;
                 hitinfo.glcolor = first_glcolor;
+                //hitinfo.normal = first_normal;
+                //hitinfo.point = ray.origin + ray.dir * (first_t);
             }
             else {
                 hitinfo.tex_bounds = voxel_bounds;
                 hitinfo.glcolor = voxel_glcolor;
+                //hitinfo.point = ray.origin + ray.dir * (hit_t);
             }
 
             vec3 local = fract(hitinfo.point / u_voxel_size);
@@ -146,6 +245,19 @@ HitInfo dda(Ray ray, Ray ray0) {
             hitinfo.face_uv = mix(hitinfo.face_uv, hitinfo.face_uv.yx, abs_n.x); // swap axes for X faces
             hitinfo.face_uv.x = mix(hitinfo.face_uv.x, 1.0 - hitinfo.face_uv.x, step(0.0, hitinfo.normal.z));
             hitinfo.face_uv.y = mix(hitinfo.face_uv.y, hitinfo.face_uv.y, step(0.0, -hitinfo.normal.y));
+
+            // TODO: PASS THIS TO HITINFO
+            vec4 tex_bounds = hitinfo.tex_bounds;
+            vec2 face_uv = hitinfo.face_uv;
+            face_uv.y = 1.0 - face_uv.y;
+            vec2 voxel_tex_uv = mix(tex_bounds.xy, tex_bounds.zw, face_uv);
+
+            vec4 albedo = texture(colortex4, voxel_tex_uv);
+            // leaves
+            if (voxel_id == 10 && albedo.a < 1.0) {
+                hitinfo.hit = false;
+                continue;
+            }
 
             break;
         }

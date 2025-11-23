@@ -76,15 +76,20 @@ void main() {
     // Normals
     #elif (TARGET_BUFFER == 1)
 
+        vec4 normal_buf;
         if (pingpong == 0) {
-            color = texture(colortex7, texcoord).rgb;
+            normal_buf = texture(colortex7, texcoord);
         }
         else {
-            color = texture(colortex8, texcoord).rgb;
+            normal_buf = texture(colortex8, texcoord);
         }
+
+        color = normal_buf.rgb;
 
         // [-1, 1] -> [0, 1]
         color = color * 0.5 + 0.5;
+
+        color /= (normal_buf.a);
 
     // Accumulations
     #elif (TARGET_BUFFER == 2)

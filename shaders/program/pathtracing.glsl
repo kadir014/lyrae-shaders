@@ -134,6 +134,7 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 	vec3 emissive = vec3(0.0);
 	if (specular.a != 1.0) {
 		emissive = specular.a * albedo;
+		emissive = vec3(2.0);
 	}
 	float roughness = pow(1.0 - specular.r, 2.0);
 	float metallic = 0.0;
@@ -143,7 +144,6 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 		metallic = 1.0;
 	}
 	else if (block_id == 13) {
-		//albedo = vec3(1.0, 0.0, 0.0);
 		glass = 1.0;
 	}
 

@@ -32,32 +32,32 @@ float luminance(vec3 color) {
 vec3 xyY_to_XYZ(vec3 xyY) {
     // https://en.wikipedia.org/wiki/CIE_1931_color_space#CIE_XYZ_color_space
 
-	float x = xyY.x;
-	float y = xyY.y;
+    float x = xyY.x;
+    float y = xyY.y;
     float Y = xyY.z;
 
     float c = (Y / y);
-	float X = x * c;
-	float Z = (1.0 - x - y) * c;
+    float X = x * c;
+    float Z = (1.0 - x - y) * c;
 
-	return vec3(X, Y, Z);
+    return vec3(X, Y, Z);
 }
 
 // Convert from CIE XYZ color space to RGB
 vec3 XYZ_to_RGB(vec3 XYZ) {
-	// https://en.wikipedia.org/wiki/CIE_1931_color_space#CIE_rg_chromaticity_space
+    // https://en.wikipedia.org/wiki/CIE_1931_color_space#CIE_rg_chromaticity_space
 
     // Approximate inverse
-	return XYZ * mat3(
-		 2.36461385, -0.89654057, -0.46807328,
+    return XYZ * mat3(
+         2.36461385, -0.89654057, -0.46807328,
         -0.51516621,  1.4264081,   0.0887581,
          0.0052037,  -0.01440816,  1.00920446
-	);
+    );
 }
 
 // Convert from CIE xyY color space to RGB
 vec3 xyY_to_RGB(vec3 xyY) {
-	return XYZ_to_RGB(xyY_to_XYZ(xyY));
+    return XYZ_to_RGB(xyY_to_XYZ(xyY));
 }
 
 
