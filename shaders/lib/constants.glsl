@@ -59,7 +59,7 @@
 #define MAX_DDA_STEPS 56 // 16 * sqrt(3) * 2
 
 // Factor to multiply emissive surface colors by 
-#define EMISSIVE_MULT 3.0
+#define EMISSIVE_MULT 3.5
 
 
 #endif // CONSTANTS_H

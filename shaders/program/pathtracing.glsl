@@ -121,21 +121,56 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 
 	// TODO: Hardcoded metals, default roughness
 
+	int block_id = int(hitinfo.glcolor.a * 255.0);
+
 	vec4 tex_bounds = hitinfo.tex_bounds;
 	vec2 face_uv = hitinfo.face_uv;
+
+	if (block_id == 17 || block_id == 18 || block_id == 19) {
+		if (hitinfo.normal.y == 1.0) {
+			face_uv.y *= 16.0 / 10.0;
+			face_uv.y += 0.1;
+		}
+		else {
+			face_uv.y *= 16.0 / 10.0;
+		}
+
+		face_uv.x = 1.0 - face_uv.x;
+
+		//face_uv.x -= 0.5;
+		//face_uv.x = 1.0 - face_uv.x;
+	}
+
 	face_uv.y = 1.0 - face_uv.y;
+
 	vec2 voxel_tex_uv = mix(tex_bounds.xy, tex_bounds.zw, face_uv);
 
 	vec3 albedo = texture(colortex4, voxel_tex_uv).rgb * hitinfo.glcolor.rgb;
 
 	vec4 specular = texture(colortex14, voxel_tex_uv);
 
-	int block_id = int(hitinfo.glcolor.a * 255.0);
 	vec3 emissive = vec3(0.0);
 	if (specular.a != 1.0) {
 		emissive = specular.a * albedo;
-		emissive = vec3(2.0);
+		//emissive = vec3(2.0);
 	}
+
+	if (block_id == 17) {
+		albedo = vec3(1.0, 0.85, 0.6);
+		emissive = albedo * 1.0;
+	}
+	else if (block_id == 18) {
+		albedo = vec3(0.35, 0.96, 1.0);
+		emissive = albedo * 1.0;
+	}
+	else if (block_id == 19) {
+		albedo = vec3(1.0, 0.1, 0.19);
+		emissive = albedo * 0.2;
+	}
+
+	emissive *= EMISSIVE_MULT;
+
+
 	float roughness = pow(1.0 - specular.r, 2.0);
 	float metallic = 0.0;
 	float glass = 0.0;
@@ -159,7 +194,7 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 }
 
 bool is_ray_occluded(vec3 pos, vec3 dir, Ray ray0, out Material nee_mat) {
-    HitInfo hitinfo = dda(Ray(pos, dir), ray0);
+    HitInfo hitinfo = dda(Ray(pos, dir), ray0, 0);
 	nee_mat = material_from_hitinfo(hitinfo);
 
 	#if (ARTISTIC_CAUSTICS == 1)
@@ -190,7 +225,7 @@ vec3 pathtrace(Ray ray, out HitInfo primary_hit, out Material primary_mat) {
 
          ******************************/
 		
-		HitInfo hitinfo = dda(ray, ray0);
+		HitInfo hitinfo = dda(ray, ray0, bounce);
 
 		if (bounce == 0) {
 			primary_hit = hitinfo;
@@ -538,6 +573,8 @@ void main() {
 		// TODO: OPTIMIZE! two pows!!!
 		float alpha = 1.0 - pow(x, pow(a + 1.0, 7.0));
 		//alpha = 1.0;
+
+		//gi_out = primary_mat.albedo;
 
 		if (pingpong == 0) {
 			f_color5 = vec4(gi_out, alpha);

@@ -21,7 +21,7 @@
 #define VOXEL_DIAMETER 32 //[16 32 64 128]
 
 #define SAMPLE_COUNT 1 //[1 2 4 8]
-#define MAX_BOUNCES 4 //[2 3 4 5]
+#define MAX_BOUNCES 4 //[2 3 4 5 30]
 
 #define ENABLE_NEE 1 //[0 1]
 #define ARTISTIC_CAUSTICS 1
@@ -43,10 +43,10 @@
 
 
 #define POST_CHROMATIC_ABERRATION 0.003
-#define POST_EXPOSURE -0.85
+#define POST_EXPOSURE -0.25
 #define POST_BRIGHTNESS 0.02
 #define POST_CONTRAST 1.086
-#define POST_SATURATION 1.43
+#define POST_SATURATION 1.53
 
 
 #endif // OPTIONS_H
