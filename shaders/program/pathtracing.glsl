@@ -152,10 +152,14 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 	vec3 emissive = vec3(0.0);
 	if (specular.a != 1.0) {
 		emissive = specular.a * albedo;
-		//emissive = vec3(2.0);
 	}
 
-	if (block_id == 17) {
+	// Concrete powder
+	if (block_id == 11) {
+		emissive = albedo * 1.0;
+	}
+	// Torches
+	else if (block_id == 17) {
 		albedo = vec3(1.0, 0.85, 0.6);
 		emissive = albedo * 1.0;
 	}
@@ -169,7 +173,6 @@ Material material_from_hitinfo(HitInfo hitinfo) {
 	}
 
 	emissive *= EMISSIVE_MULT;
-
 
 	float roughness = pow(1.0 - specular.r, 2.0);
 	float metallic = 0.0;

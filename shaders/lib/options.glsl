@@ -21,7 +21,7 @@
 #define VOXEL_DIAMETER 32 //[16 32 64 128]
 
 #define SAMPLE_COUNT 1 //[1 2 4 8]
-#define MAX_BOUNCES 4 //[2 3 4 5 30]
+#define MAX_BOUNCES 4 //[2 3 4 5]
 
 #define ENABLE_NEE 1 //[0 1]
 #define ARTISTIC_CAUSTICS 1
