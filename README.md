@@ -2,6 +2,8 @@
 <p align="center">
 <b>Lyrae • Physically-Based Real-Time Path Traced Shaderpack</b>
 <br><br>
+<b>Download on Modrinth:</b> https://modrinth.com/shader/lyrae-shaders
+<br><br>
 <img width=600 src="https://raw.githubusercontent.com/kadir014/lyrae-shaders/refs/heads/main/assets/thumb.png">
 </p>
 
