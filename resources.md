@@ -13,8 +13,8 @@ Each resource is labeled with a symbolic marker. This is not any kind of officia
 
 # Physically Based Rendering
 - ◆ TU Wien — [2021 Rendering Lectures](https://www.youtube.com/watch?v=5sY_hoh_IDc&list=PLmIqTlJ6KsE2yXzeq02hqCDpOdtj6n6A9&index=1)
-- ◆ P. Shirley, T. Black, S. Hollasch — ["Ray Tracing in One Weekend" book series](https://raytracing.github.io/)
-- ◇ M. Pharr, W. Jakob, and G. Humphreys — ["Physically Based Rendering" book](https://www.pbr-book.org/4ed/contents)
+- ◇ P. Shirley, T. Black, S. Hollasch — ["Ray Tracing in One Weekend" book series](https://raytracing.github.io/)
+- ◆ M. Pharr, W. Jakob, and G. Humphreys — ["Physically Based Rendering" book](https://www.pbr-book.org/4ed/contents)
 - ◇ Scratchapixel — [Ray tracing articles](https://www.scratchapixel.com/)
 - ◆ Brian Karis — [Real Shading in Unreal Engine 4](https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 - ◆ Brent Burley — [Physically Based Shading at Disney](https://media.disneyanimation.com/uploads/production/publication_asset/48/asset/s2012_pbs_disney_brdf_notes_v3.pdf)
@@ -28,6 +28,7 @@ Each resource is labeled with a symbolic marker. This is not any kind of officia
 - ◆ E. Heitz et al — [A Low-Discrepancy Sampler that Distributes Monte Carlo Errors as a Blue Noise in Screen Space](https://eheitzresearch.wordpress.com/762-2/)
 - ◆ H. Dammertz et al — [Edge-Avoiding À-Trous Wavelet Transform for fast Global Illumination Filtering](https://jo.dreggn.org/home/2010_atrous.pdf)
 - ◆ C. Schied et al — [Spatiotemporal Variance-Guided Filtering: Real-Time Reconstruction for Path-Traced Global Illumination](https://cg.ivd.kit.edu/publications/2017/svgf/svgf_preprint.pdf)
+- ◆ Jan Dundr — [rogressive Spatiotemporal Variance-Guided Filtering](https://old.cescg.org/CESCG-2020/wp-content/uploads/2018/04/Dundr-Progressive-Spatiotemporal-Variance-Guided-Filtering-2.pdf)
 - ◇ Jacco Bikker — [Reprojection in a Ray Tracer](https://jacco.ompf2.com/2024/01/18/reprojection-in-a-ray-tracer/)
 
 # Supplementary Topics
