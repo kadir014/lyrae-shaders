@@ -23,12 +23,13 @@ Each resource is labeled with a symbolic marker. This is not any kind of officia
 - ◆ Academy Software — [OpenPBR specification](https://academysoftwarefoundation.github.io/OpenPBR/)
 - ◇ Marco Alamia — [Physically Based Rendering - Cook-Torrance](http://www.codinglabs.net/article_physically_based_rendering_cook_torrance.aspx)
 - ◇ Joe Schutte — ["Implementing the Disney BSDF" blog](https://schuttejoe.github.io/post/disneybsdf/)
+- ◆ I. Lazányi et al — [Fresnel Term Approximations for Metals](https://naos-be.zcu.cz/server/api/core/bitstreams/c2d8b0a7-9947-4458-98e3-d3f8df920153/content)
 
 # Render Stability
 - ◆ E. Heitz et al — [A Low-Discrepancy Sampler that Distributes Monte Carlo Errors as a Blue Noise in Screen Space](https://eheitzresearch.wordpress.com/762-2/)
 - ◆ H. Dammertz et al — [Edge-Avoiding À-Trous Wavelet Transform for fast Global Illumination Filtering](https://jo.dreggn.org/home/2010_atrous.pdf)
 - ◆ C. Schied et al — [Spatiotemporal Variance-Guided Filtering: Real-Time Reconstruction for Path-Traced Global Illumination](https://cg.ivd.kit.edu/publications/2017/svgf/svgf_preprint.pdf)
-- ◆ Jan Dundr — [rogressive Spatiotemporal Variance-Guided Filtering](https://old.cescg.org/CESCG-2020/wp-content/uploads/2018/04/Dundr-Progressive-Spatiotemporal-Variance-Guided-Filtering-2.pdf)
+- ◆ Jan Dundr — [Progressive Spatiotemporal Variance-Guided Filtering](https://old.cescg.org/CESCG-2020/wp-content/uploads/2018/04/Dundr-Progressive-Spatiotemporal-Variance-Guided-Filtering-2.pdf)
 - ◇ Jacco Bikker — [Reprojection in a Ray Tracer](https://jacco.ompf2.com/2024/01/18/reprojection-in-a-ray-tracer/)
 
 # Supplementary Topics
